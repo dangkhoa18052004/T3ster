@@ -1,1 +1,4 @@
-{}
+{
+  "tests/integration/test_orders_api.py::test_create_order_and_pay": true,
+  "tests/unit/test_order_service.py::test_pay_transition_created_to_paid": true
+}

@@ -1,1 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="3" time="0.869" timestamp="2026-01-28T18:34:56.784334+07:00" hostname="LAPTOP-37QMD3HF"><testcase classname="tests.integration.test_orders_api" name="test_create_order_and_pay" time="0.157" /><testcase classname="tests.integration.test_users_api" name="test_create_user_and_get" time="0.061" /><testcase classname="tests.integration.test_users_api" name="test_create_user_duplicate_email" time="0.061" /></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="0.353" timestamp="2026-01-28T19:40:05.739357+07:00" hostname="LAPTOP-37QMD3HF"><testcase classname="tests.integration.test_orders_api" name="test_create_order_and_pay" time="0.162"><failure message="assert 36000 == 18000">client = &lt;starlette.testclient.TestClient object at 0x0000025FDA0BC890&gt;
+
+    def test_create_order_and_pay(client):
+        user_id = _create_user(client)
+        payload = {
+            "user_id": user_id,
+            "discount_code": "OFF10",
+            "items": [
+                {"sku": "SKU1", "qty": 2, "unit_price": 50000},
+                {"sku": "SKU2", "qty": 1, "unit_price": 80000},
+            ]
+        }
+        r = client.post("/orders", json=payload)
+        assert r.status_code == 201, r.text
+        order = r.json()
+        assert order["status"] == "CREATED"
+        assert order["subtotal"] == 180000
+&gt;       assert order["discount"] == 18000
+E       assert 36000 == 18000
+
+tests\integration\test_orders_api.py:24: AssertionError</failure></testcase><testcase classname="tests.integration.test_users_api" name="test_create_user_and_get" time="0.054" /><testcase classname="tests.integration.test_users_api" name="test_create_user_duplicate_email" time="0.075" /></testsuite></testsuites>

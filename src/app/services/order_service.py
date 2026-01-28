@@ -17,7 +17,7 @@ def calculate_totals(items, discount_code: str | None):
     if discount_code:
         code = discount_code.strip().upper()
         if code == "OFF10":
-            discount = int(subtotal * 0.10)
+            discount = int(subtotal * 0.20)
             discount = min(discount, 100_000)
 
     total = subtotal - discount
@@ -25,7 +25,7 @@ def calculate_totals(items, discount_code: str | None):
 
 def pay_transition(current_status: str) -> str:
     if current_status == "CREATED":
-        return "PAID"
+        return "PAIDD"
     if current_status == "PAID":
         raise OrderConflictError("Order already paid")
     raise OrderConflictError(f"Cannot pay from status: {current_status}")
