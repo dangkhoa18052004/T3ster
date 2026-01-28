@@ -7,23 +7,32 @@ on:
 jobs:
   unit:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v6
+
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip"
-      - run: pip install -r requirements.txt
-      - run: |
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run unit tests + coverage
+        run: |
           mkdir -p reports/unit
-          pytest -m "not integration" \
+          pytest tests/unit \
             --junit-xml=reports/unit/junit.xml \
             --cov=src --cov-report=xml:reports/unit/coverage.xml --cov-report=html:reports/unit/coverage_html
+
       - name: Upload unit reports
         uses: actions/upload-artifact@v6
         with:
           name: unit-reports
           path: reports/unit
+
       - name: Summary
         run: |
           echo "## Unit tests" >> $GITHUB_STEP_SUMMARY
@@ -46,23 +55,33 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+
     env:
-      DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/testdb
+      PYTHONPATH: ${{ github.workspace }}
+      DATABASE_URL: postgresql+psycopg2://postgres:13579@localhost:5432/testdb
+
     steps:
       - uses: actions/checkout@v6
+
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip"
-      - run: pip install -r requirements.txt
-      - run: |
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run integration tests
+        run: |
           mkdir -p reports/integration
-          pytest -m integration --junit-xml=reports/integration/junit.xml
+          pytest tests/integration --junit-xml=reports/integration/junit.xml
+
       - name: Upload integration reports
         uses: actions/upload-artifact@v6
         with:
           name: integration-reports
           path: reports/integration
+
       - name: Summary
         run: |
           echo "## Integration tests" >> $GITHUB_STEP_SUMMARY
