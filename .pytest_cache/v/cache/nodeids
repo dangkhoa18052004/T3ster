@@ -1,0 +1,13 @@
+[
+  "tests/integration/test_orders_api.py::test_create_order_and_pay",
+  "tests/integration/test_users_api.py::test_create_user_and_get",
+  "tests/integration/test_users_api.py::test_create_user_duplicate_email",
+  "tests/unit/test_order_service.py::test_calculate_totals_invalid_qty",
+  "tests/unit/test_order_service.py::test_calculate_totals_no_discount",
+  "tests/unit/test_order_service.py::test_calculate_totals_off10_with_cap",
+  "tests/unit/test_order_service.py::test_pay_transition_created_to_paid",
+  "tests/unit/test_order_service.py::test_pay_transition_paid_conflict",
+  "tests/unit/test_user_service.py::test_ensure_email_unique_duplicate",
+  "tests/unit/test_user_service.py::test_ensure_email_unique_ok",
+  "tests/unit/test_user_service.py::test_normalize_email"
+]
